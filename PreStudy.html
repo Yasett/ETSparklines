@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style/Main.css" />
+    <script type="text/javascript" src="scripts/d3.min.js"></script>
+    <script type="text/javascript" src="scripts/papaparse.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="scripts/msdropdown/jquery.dd.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/msdropdown/dd.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+</head>
+<body>
+    <div id="transparentBackground" class="fadePanel transparent">
+    </div>
+    <div id="divAdvancedSettings" class="Popup" style="visibility:hidden">
+        <div class="InnerPopup">
+            <table>
+                <tr>
+                    <td>
+                        <span class="title">Advanced Settings</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br />
+                        <span class="instruction">Upload fixations data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="uploadFixationFile" class="textboxupload" placeholder="" disabled="disabled" style="margin-top:1px" />
+                        <div class="file-upload  button fileuploadbutton">
+                            <span>Choose file</span>
+                            <input type="file" class="upload" onchange="handleFileSelect(event, 'fixation')" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="instruction">Upload AOIs data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="uploadAOIFile" class="textboxupload" placeholder="" disabled="disabled" style="margin-top:1px" />
+                        <div class="file-upload  button fileuploadbutton">
+                            <span>Choose file</span>
+                            <input type="file" class="upload" onchange="handleFileSelect(event, 'aoi')" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="subtitle">Filter data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="instruction">Choose which data would you like to use as input for the sparklines:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="divCheckboxes">
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="Close" class="button" value="Close" onclick="closePopup();" />
+                        <input type="button" id="Filter" class="button" value="Apply changes" onclick="filterData();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <div class="leftPane">
+            <div class="leftSection">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="title">Sparklines</span>
+                        </td>
+                        <td>
+                            <select id="visualizationType" style="width:250px;margin-left:10px" onchange="configureOptions()">
+                                <option value="" data-image="">Choose a sparkline</option>
+                                <!--<option value="P1" data-image="images/sparklines/p1.png">P1</option>-->
+                                <option value="P2" data-image="images/sparklines/p2.png">Attention map</option>
+                                <!--<option value="P3" data-image="images/sparklines/p3.png">P3</option>-->
+                                <option value="P4" data-image="images/sparklines/p4.png">Space-time grid</option>
+                                <option value="P5" data-image="images/sparklines/p5.png">Scan path</option>
+                                <!--<option value="P6" data-image="images/sparklines/p6.png">P6</option>
+                                <option value="A1" data-image="images/sparklines/a1.png">A1</option>
+                                <option value="A2" data-image="images/sparklines/a2.png">A2</option>
+                                <option value="A3" data-image="images/sparklines/a3.png">A3</option>
+                                <option value="A4" data-image="images/sparklines/a4.png">A4</option>-->
+                                <option value="A5" data-image="images/sparklines/a5.png">AOI timeline</option>
+                                <option value="A6" data-image="images/sparklines/a6.png">Transition arcs</option>
+                                <!--<option value="A7" data-image="images/sparklines/a7.png">A7</option>-->
+                                <option value="A8" data-image="images/sparklines/a8.png">Transition matrix</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="datagrid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Frankfurt</th>
+                            <th>Pisa</th>
+                            <th>Berlin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="participant">P1</td>
+                            <td><div id="p105_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p121_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p102_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P4</td>
+                            <td><div id="p405_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p421_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p402_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P5</td>
+                            <td><div id="p505_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p521_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p502_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P8</td>
+                            <td><div id="p805_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p821_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p802_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P9</td>
+                            <td><div id="p905_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p921_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p902_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P12</td>
+                            <td><div id="p1205_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p1221_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p1202_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P13</td>
+                            <td><div id="p1305_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p1321_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p1302_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P16</td>
+                            <td><div id="p1605_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p1621_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p1602_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P17</td>
+                            <td><div id="p1705_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p1721_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p1702_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P20</td>
+                            <td><div id="p2005_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2021_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2002_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P21</td>
+                            <td><div id="p2105_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2121_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2102_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P24</td>
+                            <td><div id="p2405_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2421_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2402_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P25</td>
+                            <td><div id="p2505_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2521_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2502_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P28</td>
+                            <td><div id="p2805_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2821_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2802_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P29</td>
+                            <td><div id="p2905_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p2921_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p2902_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P32</td>
+                            <td><div id="p3205_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p3221_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p3202_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P33</td>
+                            <td><div id="p3305_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p3321_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p3302_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P36</td>
+                            <td><div id="p3605_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p3621_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p3602_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P37</td>
+                            <td><div id="p3705_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p3721_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p3702_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P40</td>
+                            <td><div id="p4005_Frankfurt_S1" class="aGraph" stimuliname="Frankfurt"></div></td>
+                            <td><div id="p4021_Pisa_S1" class="aGraph" stimuliname="Pisa"></div></td>
+                            <td><div id="p4002_Berlin_S1" class="aGraph" stimuliname="Berlin"></div></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><div id="l_05_Frankfurt_S1" class="legend"></div></td>
+                            <td><div id="l_21_Pisa_S1" class="legend"></div></td>
+                            <td><div id="l_02_Berlin_S1" class="legend"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="rightPane">
+            <div id="divSettings" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Settings</span>
+                        </td>
+                        <td>
+                            <button type="button" class="button_settings" title="Advanced settings..." onclick="showModalPopUp_transparentBackground()">
+                                <img src="images/menu.png">
+                            </button>
+                        </td>
+                    </tr>
+                    <tr id="trFrequencyScale">
+                        <td>
+                            <label id="lblFrequencyScale" class="instruction">Frequency scale:</label>
+                        </td>
+                        <td id="tdFrequencyScale">
+                            <select id="cmbFrequencyScale" style="width:150px" onchange="configureOptions()">
+                                <option value="global">Global</option>
+                                <option value="stimulus">Per stimulus</option>
+                                <option value="individual">Individual</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="trYAxis">
+                        <td>
+                            <label id="lblYAxis" class="instruction">Axis:</label>
+                        </td>
+                        <td id="tdYAxis">
+                            <select id="cmbYAxis" style="width:100px" onchange="configureOptions()">
+                                <option value="x">X</option>
+                                <option value="y">Y</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divDescription" class="rightSection">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="subtitle">Description</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text" id="spDescription"></span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divDetailedVersion" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Detailed Version</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="spDetailedVersionTitle" class="instruction" style="visibility:hidden;"></span>
+                            <div id="divDetailedGraph"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divStimulus" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Stimulus</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="spStimulusTitle" class="instruction" style="visibility:hidden;"></span>
+                            <div id="divStimulusImage">
+                            </div>
+                            <div style="border:1px solid #ededed">
+                                <button id="btnReset" class="button_reset" style="width:5%; float:left;visibility:hidden;" title="Reset the image position and zoom">
+                                    <img src="images/reset.png">
+                                </button>
+                                <div id="sldZoom" style="width:85%; height:15px; margin: 1% auto; visibility:hidden;">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/app.js" type="text/javascript"></script>
+    <script src="scripts/fileHelper.js" type="text/javascript"></script>
+    <script src="scripts/P1.js" type="text/javascript"></script>
+    <script src="scripts/P2.js" type="text/javascript"></script>
+    <script src="scripts/P3.js" type="text/javascript"></script>
+    <script src="scripts/P4.js" type="text/javascript"></script>
+    <script src="scripts/P5.js" type="text/javascript"></script>
+    <script src="scripts/P6.js" type="text/javascript"></script>
+    <script src="scripts/A1.js" type="text/javascript"></script>
+    <script src="scripts/A2.js" type="text/javascript"></script>
+    <script src="scripts/A3.js" type="text/javascript"></script>
+    <script src="scripts/A4.js" type="text/javascript"></script>
+    <script src="scripts/A5.js" type="text/javascript"></script>
+    <script src="scripts/A6.js" type="text/javascript"></script>
+    <script src="scripts/A7.js" type="text/javascript"></script>
+    <script src="scripts/A8.js" type="text/javascript"></script>
+    <script src="scripts/AOISparkline.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            //Hide all pop up related elements during page ready.
+            closePopup();
+            init("data/PreStudy.csv", "data/PreStudyAOIs.csv");
+        });
+    </script>
+</body>
+
+
+
+</html>

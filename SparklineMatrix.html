@@ -1,0 +1,503 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style/Main.css" />
+    <script type="text/javascript" src="scripts/d3.min.js"></script>
+    <script type="text/javascript" src="scripts/papaparse.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="scripts/msdropdown/jquery.dd.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/msdropdown/dd.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+</head>
+<body>
+    <div id="transparentBackground" class="fadePanel transparent">
+    </div>
+    <div id="divAdvancedSettings" class="Popup" style="visibility:hidden">
+        <div class="InnerPopup">
+            <table>
+                <tr>
+                    <td>
+                        <span class="title">Advanced Settings</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br />
+                        <span class="instruction">Upload fixations data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="uploadFixationFile" class="textboxupload" placeholder="" disabled="disabled" style="margin-top:1px" />
+                        <div class="file-upload  button fileuploadbutton">
+                            <span>Choose file</span>
+                            <input type="file" class="upload" onchange="handleFileSelect(event, 'fixation')" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="instruction">Upload AOIs data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="uploadAOIFile" class="textboxupload" placeholder="" disabled="disabled" style="margin-top:1px" />
+                        <div class="file-upload  button fileuploadbutton">
+                            <span>Choose file</span>
+                            <input type="file" class="upload" onchange="handleFileSelect(event, 'aoi')" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="subtitle">Filter data</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="instruction">Choose which data would you like to use as input for the sparklines:</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="divCheckboxes">
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="Close" class="button" value="Close" onclick="closePopup();" />
+                        <input type="button" id="Filter" class="button" value="Apply changes" onclick="filterData();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <div class="leftPane">
+            <div class="leftSection">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="title">Sparklines</span>
+                        </td>
+                        <td>
+                            <select id="visualizationType" style="width:250px;margin-left:10px" onchange="configureOptions()">
+                                <option value="" data-image="">Choose a sparkline</option>
+                                <!--<option value="P1" data-image="images/sparklines/p1.png">P1</option>-->
+                                <option value="P2" data-image="images/sparklines/p2.png">Attention map</option>
+                                <!--<option value="P3" data-image="images/sparklines/p3.png">P3</option>-->
+                                <option value="P4" data-image="images/sparklines/p4.png">Space-time grid</option>
+                                <option value="P5" data-image="images/sparklines/p5.png">Scan path</option>
+                                <!--<option value="P6" data-image="images/sparklines/p6.png">P6</option>
+                                <option value="A1" data-image="images/sparklines/a1.png">A1</option>
+                                <option value="A2" data-image="images/sparklines/a2.png">A2</option>
+                                <option value="A3" data-image="images/sparklines/a3.png">A3</option>
+                                <option value="A4" data-image="images/sparklines/a4.png">A4</option>-->
+                                <option value="A5" data-image="images/sparklines/a5.png">AOI timeline</option>
+                                <option value="A6" data-image="images/sparklines/a6.png">Transition arcs</option>
+                                <!--<option value="A7" data-image="images/sparklines/a7.png">A7</option>-->
+                                <option value="A8" data-image="images/sparklines/a8.png">Transition matrix</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="datagrid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Hamburg</th>
+                            <th>Venice</th>
+                            <th>Hong Kong</th>
+                            <th>Warsaw</th>
+                            <th>Bordeaux</th>
+                            <th>Moskow</th>
+                            <th>Tokyo</th>
+                            <th>New York</th>
+                            <th>Paris</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="participant">P1</td>
+                            <td><div id="p106_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p122_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p116_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p123_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p103_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p107_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p109_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p119_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p120_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P4</td>
+                            <td><div id="p406_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p422_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p416_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p423_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p403_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p407_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p409_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p419_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p420_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P5</td>
+                            <td><div id="p506_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p522_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p516_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p523_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p503_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p507_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p509_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p519_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p520_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P8</td>
+                            <td><div id="p806_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p822_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p816_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p823_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p803_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p807_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p809_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p819_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p820_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P9</td>
+                            <td><div id="p906_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p922_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p916_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p923_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p903_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p907_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p909_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p919_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p920_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P12</td>
+                            <td><div id="p1206_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p1222_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p1216_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p1223_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p1203_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p1207_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p1209_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p1219_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p1220_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P13</td>
+                            <td><div id="p1306_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p1322_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p1316_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p1323_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p1303_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p1307_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p1309_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p1319_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p1320_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P16</td>
+                            <td><div id="p1606_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p1622_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p1616_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p1623_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p1603_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p1607_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p1609_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p1619_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p1620_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P17</td>
+                            <td><div id="p1706_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p1722_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p1716_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p1723_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p1703_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p1707_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p1709_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p1719_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p1720_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P20</td>
+                            <td><div id="p2006_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2022_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2016_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2023_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2003_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2007_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2009_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2019_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2020_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P21</td>
+                            <td><div id="p2106_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2122_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2116_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2123_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2103_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2107_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2109_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2119_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2120_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P24</td>
+                            <td><div id="p2406_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2422_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2416_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2423_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2403_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2407_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2409_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2419_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2420_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P25</td>
+                            <td><div id="p2506_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2522_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2516_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2523_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2503_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2507_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2509_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2519_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2520_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P28</td>
+                            <td><div id="p2806_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2822_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2816_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2823_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2803_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2807_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2809_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2819_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2820_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P29</td>
+                            <td><div id="p2906_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p2922_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p2916_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p2923_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p2903_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p2907_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p2909_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p2919_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p2920_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P32</td>
+                            <td><div id="p3206_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p3222_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p3216_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p3223_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p3203_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p3207_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p3209_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p3219_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p3220_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P33</td>
+                            <td><div id="p3306_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p3322_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p3316_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p3323_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p3303_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p3307_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p3309_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p3319_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p3320_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P36</td>
+                            <td><div id="p3606_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p3622_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p3616_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p3623_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p3603_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p3607_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p3609_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p3619_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p3620_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P37</td>
+                            <td><div id="p3706_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p3722_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p3716_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p3723_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p3703_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p3707_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p3709_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p3719_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p3720_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="participant">P40</td>
+                            <td><div id="p4006_Hamburg_S1" class="aGraph" stimuliname="Hamburg"></div></td>
+                            <td><div id="p4022_Venedig_S1" class="aGraph" stimuliname="Venedig"></div></td>
+                            <td><div id="p4016_Hong_Kong_S1" class="aGraph" stimuliname="Hong Kong"></div></td>
+                            <td><div id="p4023_Warschau_S1" class="aGraph" stimuliname="Warsaw"></div></td>
+                            <td><div id="p4003_Bordeaux_S1" class="aGraph" stimuliname="Bordeaux"></div></td>
+                            <td><div id="p4007_Moskau_S1" class="aGraph" stimuliname="Moscow"></div></td>
+                            <td><div id="p4009_Tokyo_S1" class="aGraph" stimuliname="Tokyo"></div></td>
+                            <td><div id="p4019_New_York_S1" class="aGraph" stimuliname="New York"></div></td>
+                            <td><div id="p4020_Paris_S1" class="aGraph" stimuliname="Paris"></div></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><div id="l_06_Hamburg_S1" class="legend"></div></td>
+                            <td><div id="l_22_Venedig_S1" class="legend"></div></td>
+                            <td><div id="l_16_Hong_Kong_S1" class="legend"></div></td>
+                            <td><div id="l_23_Warschau_S1" class="legend"></div></td>
+                            <td><div id="l_03_Bordeaux_S1" class="legend"></div></td>
+                            <td><div id="l_07_Moskau_S1" class="legend"></div></td>
+                            <td><div id="l_09_Tokyo_S1" class="legend"></div></td>
+                            <td><div id="l_19_New_York_S1" class="legend"></div></td>
+                            <td><div id="l_20_Paris_S1" class="legend"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="rightPane">
+            <div id="divSettings" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Settings</span>
+                        </td>
+                        <td>
+                            <button type="button" class="button_settings" title="Advanced settings..." onclick="showModalPopUp_transparentBackground()">
+                                <img src="images/menu.png">
+                            </button>
+                        </td>
+                    </tr>
+                    <tr id="trFrequencyScale">
+                        <td>
+                            <label id="lblFrequencyScale" class="instruction">Frequency scale:</label>
+                        </td>
+                        <td id="tdFrequencyScale">
+                            <select id="cmbFrequencyScale" style="width:150px" onchange="configureOptions()">
+                                <option value="global">Global</option>
+                                <option value="stimulus">Per stimulus</option>
+                                <option value="individual">Individual</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="trYAxis">
+                        <td>
+                            <label id="lblYAxis" class="instruction">Axis:</label>
+                        </td>
+                        <td id="tdYAxis">
+                            <select id="cmbYAxis" style="width:100px" onchange="configureOptions()">
+                                <option value="x">X</option>
+                                <option value="y">Y</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divDescription" class="rightSection">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="subtitle">Description</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="text" id="spDescription"></span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divDetailedVersion" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Detailed Version</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="spDetailedVersionTitle" class="instruction" style="visibility:hidden;"></span>
+                            <div id="divDetailedGraph"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divStimulus" class="rightSection">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <span class="subtitle">Stimulus</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="spStimulusTitle" class="instruction" style="visibility:hidden;"></span>
+                            <div id="divStimulusImage">
+                            </div>
+                            <div style="border:1px solid #ededed">
+                                <button id="btnReset" class="button_reset" style="width:5%; float:left;visibility:hidden;" title="Reset the image position and zoom">
+                                    <img src="images/reset.png">
+                                </button>
+                                <div id="sldZoom" style="width:85%; height:15px; margin: 1% auto; visibility:hidden;">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/app.js" type="text/javascript"></script>
+    <script src="scripts/fileHelper.js" type="text/javascript"></script>
+    <script src="scripts/P1.js" type="text/javascript"></script>
+    <script src="scripts/P2.js" type="text/javascript"></script>
+    <script src="scripts/P3.js" type="text/javascript"></script>
+    <script src="scripts/P4.js" type="text/javascript"></script>
+    <script src="scripts/P5.js" type="text/javascript"></script>
+    <script src="scripts/P6.js" type="text/javascript"></script>
+    <script src="scripts/A1.js" type="text/javascript"></script>
+    <script src="scripts/A2.js" type="text/javascript"></script>
+    <script src="scripts/A3.js" type="text/javascript"></script>
+    <script src="scripts/A4.js" type="text/javascript"></script>
+    <script src="scripts/A5.js" type="text/javascript"></script>
+    <script src="scripts/A6.js" type="text/javascript"></script>
+    <script src="scripts/A7.js" type="text/javascript"></script>
+    <script src="scripts/A8.js" type="text/javascript"></script>
+    <script src="scripts/AOISparkline.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            //Hide all pop up related elements during page ready.
+            closePopup();
+            init("data/Study.csv", "data/StudyAOIs.csv");
+        });
+    </script>
+</body>
+
+</html>

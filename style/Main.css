@@ -1,0 +1,376 @@
+﻿.leftPane {
+    width: 65%;
+    height: 100%;
+    float: left;
+}
+
+.leftSection {
+    padding: 1%;
+    background-color: #ffffff;
+    border-bottom: 1px #DBDBDB solid;
+}
+
+.rightPane {
+    width: 30%;
+    height: 100vh;
+    float: right;
+    background-color: #ededed;
+    border: 1px #DBDBDB solid;
+}
+
+.rightSection {
+    padding: 1%;
+    background-color: #ededed;
+    border: 1px #DBDBDB solid;
+}
+
+path {
+    fill: none;
+    stroke-width: 1px;
+}
+
+.aGraph {
+    border: 1px solid;
+    margin: 5px auto 5px auto;
+}
+
+.aGraph_clicked {
+    border: 1px solid;
+    margin: 5px auto 5px auto;
+    -moz-box-shadow:  0px 0px 12px 2px rgb(128,128,128);
+    -webkit-box-shadow:  0px 0px 12px 2px rgb(128,128,128);
+    box-shadow:  0px 0px 12px 2px rgb(128,128,128);
+}
+
+.participant {
+    width: 70px;
+    text-align: center;
+}
+
+.datagrid table {
+    width: 300px;
+    border-collapse: collapse;
+    align-self: center;
+    text-align: center;
+    border: 1px solid #929292;
+}
+
+.datagrid {
+    width: 800px;
+    font: normal 12px/150% Tahoma, Arial, Helvetica, sans-serif;
+    background: #fff;
+    /*border: 1px solid #8C8C8C;*/
+    align-self: center;
+    padding: 2%;
+}
+
+    .datagrid table td, .datagrid table th {
+        padding: 1px;
+    }
+
+    .datagrid table thead th {
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8C8C8C), color-stop(1, #8C8C8C) );
+        background: -moz-linear-gradient( center top, #8C8C8C 5%, #8C8C8C 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8C8C8C', endColorstr='#8C8C8C');
+        background-color: #8C8C8C;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: bold;
+        border-left: 1px solid #FCFFFF;
+        text-align: center;
+    }
+
+        .datagrid table thead th:first-child {
+            border: none;
+        }
+
+    .datagrid table tbody td {
+        color: #7D7D7D;
+        border-left: 1px solid #DBDBDB;
+        font-size: 12px;
+        border-bottom: 1px solid #DBDBDB;
+        font-weight: normal;
+    }
+
+        .datagrid table tbody td:first-child {
+            border-left: none;
+        }
+
+    .datagrid table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+.fadePanel {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    background-color: dimgray;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    filter: alpha(opacity=25);
+    -moz-opacity: 0.25;
+    -khtml-opacity: 0.25;
+    opacity: 0.25;
+}
+
+.Popup {
+    position: fixed;
+    margin: 0px 25%;
+    z-index: 99999;
+}
+
+.InnerPopup {
+    margin: auto;
+    min-width: 450px;
+    min-height: 400px;
+    background-color: white;
+    font: normal 11px/100% Tahoma, Arial, Helvetica, sans-serif;
+    padding: 20px;
+    /*-moz-border-radius-topright: 10px;
+border-top-right-radius: 10px;
+-moz-border-radius-topleft: 10px;
+border-top-left-radius: 10px;
+-moz-border-radius-bottomright: 10px;
+border-bottom-right-radius: 10px;
+-moz-border-radius-bottomleft: 10px;
+border-bottom-left-radius: 10px;*/
+    border: 1px solid #CEC9C9;
+    overflow-y: scroll;
+}
+
+#divCheckboxes {
+    height: 200px;
+    overflow-y: scroll;
+    border: 1px #929292 solid;
+}
+
+.title {
+    font: normal 22px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    word-spacing: 2pt;
+}
+
+.subtitle {
+    font: normal 18px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    word-spacing: 2pt;
+}
+
+.instruction {
+    font: normal 14px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    word-spacing: 2pt;
+}
+
+.text {
+    font: normal 12px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    word-spacing: 2pt;
+}
+
+.text-small {
+    font: normal 10px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    word-spacing: 2pt;
+}
+.text-nocolor {
+    font: normal 12px/100% Tahoma, Arial, Helvetica, sans-serif;
+    word-spacing: 2pt;
+}
+
+.button {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    font-size: 14px;
+    background: #606060;
+    padding: 7px 15px 7px 15px;
+    text-decoration: none;
+    border: none;
+    width: 150px;
+}
+
+    .button:hover {
+        background: #858585;
+        text-decoration: none;
+    }
+
+.button_settings {
+    -moz-box-shadow: #ededed 0px 0px 5px;
+    -webkit-box-shadow: #ededed 0 0 5px;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    background-color: #ededed;
+    border: 1px solid #ededed;
+    color: #ffffff;
+    display: inline-block;
+    padding: 5px;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    float: right;
+}
+
+    .button_settings:hover {
+        border: 1px solid #dbdbdb;
+        -moz-box-shadow: #575757 0px 0px 5px;
+        -webkit-box-shadow: #575757 0 0 5px;
+    }
+
+.button_reset {
+    -moz-box-shadow: #ededed 0px 0px 5px;
+    -webkit-box-shadow: #ededed 0 0 5px;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    background-color: #ededed;
+    border: 1px solid #dbdbdb;
+    color: #ffffff;
+    display: inline-block;
+    padding: 6px;
+    text-decoration: none;
+    transition: all 0.5s ease;
+}
+
+    .button_reset:hover {
+        border: 1px solid #dbdbdb;
+        -moz-box-shadow: #575757 0px 0px 5px;
+        -webkit-box-shadow: #575757 0 0 5px;
+    }
+
+#divStimulusImage {
+    width: 75%;
+    height: 65%;
+    margin: 5px auto 5px auto;
+    text-align:center;
+}
+
+#divDetailedGraph {
+    width: 75%;
+    height: 65%;
+    margin: 5px auto 5px auto;
+    background: #ffffff;
+}
+
+/*#imgStimulus {
+    max-width: 100%;
+    max-height: 100%;
+    border:1px #929292 solid;
+}*/
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+.fileuploadbutton {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 3px 10px 3px 10px;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100px;
+}
+
+.file-upload {
+    position: relative;
+    overflow: hidden;
+}
+
+    .file-upload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+.textboxupload {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #606060;
+    font-size: 14px;
+    background: #ffffff;
+    padding: 3px 10px 5px 10px;
+    text-decoration: none;
+    border: 1px #929292 solid;
+    width: 210px;
+}
+/*Detailed graphs*/
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font: normal 12px/100% Tahoma, Arial, Helvetica, sans-serif;
+    color: #151414;
+    font-size: 10px;
+}
+
+.dot {
+    stroke: #575757;
+    fill: #DBDBDB;
+}
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    /*width: 80px;
+    height: 20px;*/
+    border: 1px rgb(59, 59, 59) solid;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=64)";
+    filter: alpha(opacity=64);
+    -moz-opacity: 0.64;
+    -khtml-opacity: 0.64;
+    opacity: 0.64;
+    -webkit-box-sizing: initial;
+    -moz-box-sizing: initial;
+    background: rgb(252, 252, 252);
+    -moz-box-shadow: 1px 1px 4px 0px rgb(157, 157, 157);
+    -webkit-box-shadow: 1px 1px 4px 0px rgb(157, 157, 157);
+    box-shadow: 1px 1px 4px 0px rgb(157, 157, 157);
+    pointer-events: none;
+}
+.tick line{
+    opacity: 0.2;
+  }
