@@ -1,7 +1,8 @@
 # ETSparklines
 ![Alt text](https://github.com/Yasett/ETSparklines/blob/master/Screenshots/ui.PNG)
 
-ETSparklines is a tool to display word-sized eye tracking visualizations.
+ETSparklines is a tool that generates word-sized visualizations from eye tracking data. 
+The word-sized eye tracking visualizations displayed by the tool were presented by Beck et al. They have published a [paper](http://www.visus.uni-stuttgart.de/uploads/tx_vispublications/etvis15-book_word-sized_01.pdf) at ETVIS 2015.
 
 ## Getting Started
 
@@ -11,7 +12,11 @@ ETSparklines is a tool to display word-sized eye tracking visualizations.
 
 ### Installing
 
-* Load the data files that contain the eye tracking data. To do this, click on the settings button in the upper-right corner of the screen:
+* Download the source code or fork this repository.
+
+* Open the main page: "SparklineMatrix" in a web browser.
+
+* Load the data files that contain the eye tracking data. To do this, click on the settings button in the upper-right corner of the screen:<br />
 ![Alt text](https://github.com/Yasett/ETSparklines/blob/master/Screenshots/settings.PNG)
 
 * In the popup window, click the first "Choose file" button. Navigate around the file chooser, choose the fixation data file, and click the dialog's "Open" button. 
