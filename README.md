@@ -7,14 +7,15 @@ ETSparklines is a tool to display word-sized eye tracking visualizations.
 
 ### Prerequisities
 
-A web browser with javascript enabled
+* A web browser with javascript enabled
 
 ### Installing
 
-* Load the data files that contain the eye tracking data. To do this. click on the settings button in the upper right part of the UI:
+* Load the data files that contain the eye tracking data. To do this, click on the settings button in the upper-right corner of the screen:
 ![Alt text](https://github.com/Yasett/ETSparklines/blob/master/Screenshots/settings.PNG)
 
-* In the popup window, click on the first file chooser control and select select the fixation data file. Then click on the second file chooser control and select the AOI data file. 
+* In the popup window, click the first "Choose file" button. Navigate around the file chooser, choose the fixation data file, and click the dialog's "Open" button. 
+Repeat these actions with the second file chooser, selecting the AOI data file. 
 ![Alt text](https://github.com/Yasett/ETSparklines/blob/master/Screenshots/load_files.PNG)
 
 You can find examples of both files inside the project, in the "data" folder:"Study.csv" and "StudyAOIs.csv"
