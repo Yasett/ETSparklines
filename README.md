@@ -1,7 +1,7 @@
 # ETSparklines
 ![Alt text](https://github.com/Yasett/ETSparklines/blob/master/Screenshots/ui.PNG)
 
-ETSparklines is a tool that generates word-sized visualizations from eye tracking data. 
+ETSparklines is a tool that generates word-sized visualizations from eye tracking data. <br />
 The word-sized eye tracking visualizations displayed by the tool were presented by Beck et al. They have published a [paper](http://www.visus.uni-stuttgart.de/uploads/tx_vispublications/etvis15-book_word-sized_01.pdf) at ETVIS 2015.
 
 ## Getting Started
